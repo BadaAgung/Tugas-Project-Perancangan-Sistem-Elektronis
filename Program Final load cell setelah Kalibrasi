@@ -1,0 +1,20 @@
+#include "HX711.h"
+
+const int LOADCELL_DOUT_PIN = 12;
+const int LOADCELL_SCK_PIN = 13;
+
+HX711 scale;
+void setup() {  
+  Serial.begin(115200);  
+  Serial.println("Load Cell Interfacing with ESP32 - DIY CHEAP PERFECT");    
+  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
+  scale.set_scale(420.5898);    //scale factor input here  
+  scale.tare();       // reset scale
+}
+void loop() {  
+  Serial.print("Weight: ");  
+  Serial.println(scale.get_units(10), 1); 
+  scale.power_down(); // set ADC to sleep mode  
+  delay(1000);  
+  scale.power_up();
+}
